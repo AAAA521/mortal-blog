@@ -41,7 +41,7 @@ export function countCategories(posts: Post[]): { name: string; count: number }[
   }
   return [...map.entries()]
     .map(([name, count]) => ({ name, count }))
-    .sort((a, b) => b.count - a.count || a.name.localeCompare(b.name));
+    .sort((a, b) => b.count - a.count || a.name.localeCompare(b.name, 'zh-CN'));
 }
 
 /** 统计标签及篇数 */
@@ -54,7 +54,7 @@ export function countTags(posts: Post[]): { name: string; count: number }[] {
   }
   return [...map.entries()]
     .map(([name, count]) => ({ name, count }))
-    .sort((a, b) => b.count - a.count || a.name.localeCompare(b.name));
+    .sort((a, b) => b.count - a.count || a.name.localeCompare(b.name, 'zh-CN'));
 }
 
 /** 估算阅读时长（分钟） */
