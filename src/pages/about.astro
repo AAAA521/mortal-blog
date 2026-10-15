@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { PROFILE } from '../consts';
+import { withBase } from '../utils';
 ---
 
 <BaseLayout title="关于">
@@ -14,7 +15,7 @@ import { PROFILE } from '../consts';
         <div style="text-align:center;">
           <img
             class="profile-avatar"
-            src={PROFILE.avatar}
+            src={withBase(PROFILE.avatar)}
             alt={PROFILE.name}
             style="width:8rem;height:8rem;"
           />
@@ -41,7 +42,7 @@ import { PROFILE } from '../consts';
 
           <h3>联系我</h3>
           <p>
-            有问题或想交流，欢迎通过 <a href="https://github.com/" target="_blank" rel="noopener"
+            有问题或想交流，欢迎通过 <a href="https://github.com/AAAA521" target="_blank" rel="noopener"
               >GitHub</a
             > 找到我，也可以在友链页留言。
           </p>

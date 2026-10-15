@@ -1,6 +1,6 @@
 ---
 import { PROFILE, SOCIAL_LINKS } from '../consts';
-import { countCategories, countTags, type Post } from '../utils';
+import { countCategories, countTags, withBase, type Post } from '../utils';
 
 interface Props {
   posts: Post[];
@@ -13,7 +13,7 @@ const tags = countTags(posts);
 <aside class="sidebar">
   <!-- 个人名片 -->
   <div class="card profile">
-    <a href="/about/"><img class="profile-avatar" src={PROFILE.avatar} alt={PROFILE.name} /></a>
+    <a href={withBase('/about/')}><img class="profile-avatar" src={withBase(PROFILE.avatar)} alt={PROFILE.name} /></a>
     <div class="profile-name">{PROFILE.name}</div>
     <div class="profile-bio">{PROFILE.bio}</div>
     <div class="profile-links">
@@ -21,7 +21,7 @@ const tags = countTags(posts);
         SOCIAL_LINKS.map((s) => (
           <a
             class="chip"
-            href={s.url}
+            href={s.external ? s.url : withBase(s.url)}
             target={s.external ? '_blank' : undefined}
             rel={s.external ? 'noopener' : undefined}
           >
@@ -39,7 +39,7 @@ const tags = countTags(posts);
       {
         categories.map((c) => (
           <li>
-            <a class="widget-item" href={`/archive/?category=${encodeURIComponent(c.name)}`}>
+            <a class="widget-item" href={withBase(`/archive/?category=${encodeURIComponent(c.name)}`)}>
               <span>{c.name}</span>
               <span class="widget-count">{c.count}</span>
             </a>
@@ -55,7 +55,7 @@ const tags = countTags(posts);
     <div style="display:flex;flex-wrap:wrap;gap:0.4rem;">
       {
         tags.map((t) => (
-          <a class="tag" href={`/archive/?tag=${encodeURIComponent(t.name)}`}>
+          <a class="tag" href={withBase(`/archive/?tag=${encodeURIComponent(t.name)}`)}>
             {t.name}
           </a>
         ))

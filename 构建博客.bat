@@ -29,7 +29,7 @@ echo       可以直接把 dist\ 里的内容上传到服务器 / GitHub Pages
 echo.
 echo ============================================
 echo.
-echo 按任意键在本地预览构建结果 (localhost:4330)...
+echo 按任意键在本地预览构建结果 (localhost:4330/mortal-blog/)...
 pause >nul
 
 call npm run preview -- --port 4330

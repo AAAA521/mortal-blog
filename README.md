@@ -8,7 +8,7 @@
 
 | 双击这个 | 作用 |
 |---|---|
-| **`启动博客.bat`** | 启动本地预览 http://localhost:4321，改文章自动刷新。关窗口即停止 |
+| **`启动博客.bat`** | 启动本地预览 http://localhost:4321/mortal-blog/ ，改文章自动刷新。关窗口即停止 |
 | **`构建博客.bat`** | 生成静态站点到 `dist/`，完成后可回车本地预览 |
 | **`打开终端.bat`** | 打开一个已配好环境的终端，可自己敲命令 |
 
@@ -25,10 +25,14 @@
 ```bash
 cd /d D:\mortal-blog   # PowerShell 用 cd D:\mortal-blog（不带 /d）
 npm install            # 首次安装依赖
-npm run dev            # 启动开发服务器  http://localhost:4321
+npm run dev            # 启动开发服务器  http://localhost:4321/mortal-blog/
 npm run build          # 构建到 dist/
 npm run preview        # 预览构建产物
 ```
+
+> **注意地址带 `/mortal-blog/`**：站点配了 `base`（因为部署在
+> `https://AAAA521.github.io/mortal-blog/` 这个子路径下），开发服务器也会跟着带前缀。
+> 直接访问 `http://localhost:4321/` 会 404。
 
 ### ⚠️ 改完 bat 要重新编码
 
@@ -143,13 +147,19 @@ export const FRIEND_LINKS = [...];
 
 **方式一：双击脚本（推荐）**
 
-1. 在 GitHub 网页新建仓库：选 **Public**、**不要**勾 README / .gitignore，
-   建好后复制页面上 `.git` 结尾的地址；
-2. 双击 **`部署.bat`**，粘贴地址回车。首次运行会问你的名字和 GitHub 邮箱；
-   推送时浏览器会弹登录窗口，登录即可（**不需要自己搞 token**）；
-3. 仓库 **Settings → Pages → Build and deployment → Source** 选 **GitHub Actions**；
-4. 打开仓库的 Actions 页面等绿勾（约 1 分钟），地址就是
-   `https://用户名.github.io/仓库名`。
+仓库 `AAAA521/mortal-blog` 已在 GitHub 上建好，本地也已初始化并绑定了远程，**现在只差推送**：
+
+1. 双击 **`部署.bat`** —— 自动提交改动并推送；首次会弹出浏览器让你登录 GitHub 账号；
+2. 到仓库 **Settings → Pages → Build and deployment → Source** 选 **GitHub Actions**（只需做一次）；
+3. 打开仓库 **Actions** 页面等绿勾（约 1 分钟），完成后访问
+   **https://AAAA521.github.io/mortal-blog/**。
+
+> **本机没有独立安装 Git**，脚本用的是 WorkBuddy 自带的便携版
+> `D:\workbuddy\resources\vendor\PortableGit\cmd`（写在 `部署.bat` 顶部的 `GIT_DIR`）。
+> 如果以后自己装了 Git for Windows，把 `GIT_DIR` / `if exist` 那两行删掉即可。
+>
+> 另外本机装了 **Steam++（Watt Toolkit）** 的 GitHub 加速，它把 `github.com` 指到了
+> `127.0.0.1`。**推送时 Steam++ 必须开着**，否则连不上；关掉它会报「连不上 GitHub」。
 
 **方式二：自己敲命令**
 
@@ -172,18 +182,32 @@ npm run build      # 产物在 dist/
 
 把 `dist/` 内容传到 `gh-pages` 分支即可。
 
-### ⚠️ 部署前必改
+### 部署地址与 `base`（本项目已配好）
 
-如果仓库**不是** `用户名.github.io`，而是 `用户名/repo` 这种形式，必须改 `astro.config.mjs`：
+本站部署在 **`https://AAAA521.github.io/mortal-blog/`**，属于 GitHub Pages 的
+"项目页"（仓库名 ≠ 用户名.github.io），所以 `astro.config.mjs` 里设了：
 
 ```js
-export default defineConfig({
-  site: 'https://你的用户名.github.io',
-  base: '/你的仓库名',        // ← 仓库名形式才需要；用户名.github.io 则保持 '/'
-});
+site: 'https://AAAA521.github.io',
+base: '/mortal-blog',
 ```
 
-同时把 `src/consts.ts` 里的 `SITE.url` 改成真实地址。
+**这一设置的影响**：站内所有链接都要带 `/mortal-blog/` 前缀。
+Astro 只会自动改写它自己生成的资源路径，**源码和 Markdown 里手写的 `/xxx` 不会自动加前缀**。
+所以：
+
+- **组件里**写站内链接，用 `withBase()`（定义在 `src/utils.ts`）：
+  ```astro
+  <a href={withBase('/about/')}>关于</a>
+  ```
+- **Markdown 里**照常写 `/xxx` 就行，`astro.config.mjs` 的 `rehypeBasePath` 插件会自动补前缀：
+  ```markdown
+  [看这篇](/posts/rsa-thirteen-seals/)
+  ![截图](/playit_sudoku.png)
+  ```
+
+如果以后把仓库改名成 `AAAA521.github.io`（变成站点根），把 `base` 改成 `'/'` 即可，
+其他代码不用动。
 
 ## 许可
 

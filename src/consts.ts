@@ -5,8 +5,8 @@ export const SITE = {
   description: '网络安全学习者 / CTF 选手的学习记录',
   author: 'Mortal',
   lang: 'zh-CN',
-  // 部署到 GitHub Pages 前改成你的真实地址
-  url: 'https://mortal.github.io',
+  // 部署到 GitHub Pages 前改成你的真实地址（含仓库名）
+  url: 'https://AAAA521.github.io/mortal-blog',
 };
 
 export const PROFILE = {
@@ -28,7 +28,7 @@ export const NAV_ITEMS = [
 ];
 
 export const SOCIAL_LINKS = [
-  { name: 'GitHub', url: 'https://github.com/', icon: 'github', external: true },
+  { name: 'GitHub', url: 'https://github.com/AAAA521', icon: 'github', external: true },
   { name: 'RSS', url: '/rss.xml', icon: 'rss', external: false },
 ];
 

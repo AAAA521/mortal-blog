@@ -1,7 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
-import { sortPosts, formatDate } from '../utils';
+import { sortPosts, formatDate, withBase } from '../utils';
 
 const all = sortPosts(await getCollection('posts', ({ data }) => !data.draft));
 
@@ -25,7 +25,7 @@ const years = [...groups.keys()].sort((a, b) => b - a);
       <div id="filter-bar" style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:1rem;font-size:0.85rem;">
         <span style="color:var(--text-mute);align-self:center;">当前筛选：</span>
         <span id="filter-label" class="tag">全部</span>
-        <a href="/archive/" id="filter-clear" style="color:var(--text-mute);align-self:center;">清除</a>
+        <a href={withBase('/archive/')} id="filter-clear" style="color:var(--text-mute);align-self:center;">清除</a>
       </div>
 
       <div id="archive-list">
@@ -40,7 +40,7 @@ const years = [...groups.keys()].sort((a, b) => b - a);
                   data-tags={(p.data.tags ?? []).join(',')}
                 >
                   <span class="archive-date">{formatDate(p.data.published)}</span>
-                  <a href={`/posts/${p.id}/`}>{p.data.title}</a>
+                  <a href={withBase(`/posts/${p.id}/`)}>{p.data.title}</a>
                 </div>
               ))}
             </section>

@@ -31,7 +31,7 @@ if not exist "node_modules" (
 
 echo.
 echo [2/2] 启动开发服务器...
-echo       浏览器打开 http://localhost:4321
+echo       浏览器打开 http://localhost:4321/mortal-blog/
 echo       改文章后会自动刷新，不用重启
 echo       要停止：直接关掉这个窗口，或按 Ctrl+C
 echo.

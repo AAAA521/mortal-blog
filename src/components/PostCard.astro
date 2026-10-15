@@ -1,6 +1,6 @@
 ---
 import type { Post } from '../utils';
-import { formatDate, readingTime } from '../utils';
+import { formatDate, readingTime, withBase } from '../utils';
 
 interface Props {
   post: Post;
@@ -10,7 +10,7 @@ const { post, minutes = 0 } = Astro.props;
 const { title, published, description, category, tags, pinned } = post.data;
 ---
 
-<a class="card card-hover post-card" href={`/posts/${post.id}/`}>
+<a class="card card-hover post-card" href={withBase(`/posts/${post.id}/`)}>
   <h2>
     {pinned && <span class="pin-badge">置顶</span>}
     {title}

@@ -18,7 +18,7 @@ npm -v 2>nul
 echo.
 echo --------------------------------------------
 echo 常用命令:
-echo   npm run dev    启动本地预览   localhost:4321
+echo   npm run dev    启动本地预览   localhost:4321/mortal-blog/
 echo   npm run build  构建静态站点   输出到 dist\
 echo   dir src\content\posts   查看文章文件
 echo --------------------------------------------

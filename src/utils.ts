@@ -2,6 +2,23 @@ import type { CollectionEntry } from 'astro:content';
 
 export type Post = CollectionEntry<'posts'>;
 
+/**
+ * 站点部署根路径（即 Astro 的 base）。
+ * 部署在 https://<用户名>.github.io/mortal-blog/ 时为 '/mortal-blog'；
+ * 部署在根域名（<用户名>.github.io 仓库）时为 ''。
+ */
+export const BASE = import.meta.env.BASE_URL.replace(/\/+$/, '');
+
+/**
+ * 给站内绝对路径补上 base 前缀：
+ *   withBase('/about/')  -> '/mortal-blog/about/'
+ * 外链、协议相对地址、锚点、相对路径都原样返回。
+ */
+export function withBase(path: string): string {
+  if (!path.startsWith('/') || path.startsWith('//')) return path;
+  return `${BASE}${path}`;
+}
+
 /** 日期格式化为 2026-10-15 */
 export function formatDate(d: Date): string {
   const y = d.getFullYear();

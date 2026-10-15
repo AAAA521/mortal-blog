@@ -1,15 +1,16 @@
 ---
 import { SITE } from '../consts';
+import { withBase } from '../utils';
 const year = new Date().getFullYear();
 ---
 
 <footer class="footer">
   <div class="container">
     <div class="footer-links">
-      <a href="/rss.xml">RSS</a>
-      <a href="/sitemap-index.xml">Sitemap</a>
-      <a href="/archive/">归档</a>
-      <a href="/about/">关于</a>
+      <a href={withBase('/rss.xml')}>RSS</a>
+      <a href={withBase('/sitemap-index.xml')}>Sitemap</a>
+      <a href={withBase('/archive/')}>归档</a>
+      <a href={withBase('/about/')}>关于</a>
     </div>
     <div>© {year} {SITE.author}. All Rights Reserved.</div>
     <div style="margin-top: 0.35rem; opacity: 0.75;">

@@ -1,6 +1,6 @@
 ---
 import PostCard from './PostCard.astro';
-import type { Post } from '../utils';
+import { withBase, type Post } from '../utils';
 
 interface Props {
   posts: Post[];
@@ -24,16 +24,16 @@ const { posts, page = 1, totalPages = 1 } = Astro.props;
       {totalPages > 1 && (
         <nav class="pagination">
           {page > 1 && (
-            <a class="page-num" href={page === 2 ? '/' : `/page/${page - 1}/`}>
+            <a class="page-num" href={page === 2 ? withBase('/') : withBase(`/page/${page - 1}/`)}>
               ‹
             </a>
           )}
           {Array.from({ length: totalPages }, (_, i) => i + 1).map((n) => (
-            <a class={`page-num ${n === page ? 'active' : ''}`} href={n === 1 ? '/' : `/page/${n}/`}>
+            <a class={`page-num ${n === page ? 'active' : ''}`} href={n === 1 ? withBase('/') : withBase(`/page/${n}/`)}>
               {n}
             </a>
           ))}
-          {page < totalPages && <a class="page-num" href={`/page/${page + 1}/`}>›</a>}
+          {page < totalPages && <a class="page-num" href={withBase(`/page/${page + 1}/`)}>›</a>}
         </nav>
       )}
     </>

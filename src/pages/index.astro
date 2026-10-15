@@ -4,7 +4,7 @@ import Sidebar from '../components/Sidebar.astro';
 import PostList from '../components/PostList.astro';
 import { getCollection } from 'astro:content';
 import { PROFILE, SITE } from '../consts';
-import { sortPosts } from '../utils';
+import { sortPosts, withBase } from '../utils';
 
 export const PAGE_SIZE = 10;
 
@@ -16,7 +16,7 @@ const totalPages = Math.max(1, Math.ceil(all.length / PAGE_SIZE));
 <BaseLayout>
   <div class="container">
     <div class="banner">
-      <img src={PROFILE.banner} alt="Banner image of the blog" />
+      <img src={withBase(PROFILE.banner)} alt="Banner image of the blog" />
       <div class="banner-title">
         <h1>{SITE.title}</h1>
         <p>{SITE.subtitle}</p>
