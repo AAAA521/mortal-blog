@@ -1,0 +1,34 @@
+---
+import type { Post } from '../utils';
+import { formatDate, readingTime } from '../utils';
+
+interface Props {
+  post: Post;
+  minutes?: number;
+}
+const { post, minutes = 0 } = Astro.props;
+const { title, published, description, category, tags, pinned } = post.data;
+---
+
+<a class="card card-hover post-card" href={`/posts/${post.id}/`}>
+  <h2>
+    {pinned && <span class="pin-badge">置顶</span>}
+    {title}
+  </h2>
+  <div class="post-meta">
+    <span>{formatDate(published)}</span>
+    <span class="dot"></span>
+    <span>{category}</span>
+    {minutes > 0 && <><span class="dot"></span><span>{minutes} 分钟</span></>}
+  </div>
+  {description && <p class="post-desc">{description}</p>}
+  {
+    tags && tags.length > 0 && (
+      <div class="post-tags">
+        {tags.map((t) => (
+          <span class="tag">#{t}</span>
+        ))}
+      </div>
+    )
+  }
+</a>

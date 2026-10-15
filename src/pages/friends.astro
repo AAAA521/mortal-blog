@@ -1,0 +1,39 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { FRIEND_LINKS } from '../consts';
+---
+
+<BaseLayout title="友链">
+  <div class="container" style="padding-top:1.25rem;">
+    <div class="card">
+      <div class="page-head">
+        <h1>友链</h1>
+        <p>欢迎交换友链，在 GitHub 上给我提 issue 即可 ~</p>
+      </div>
+
+      <div class="friend-grid">
+        {
+          FRIEND_LINKS.map((f) => (
+            <a class="card card-hover friend-card" href={f.url} target="_blank" rel="noopener">
+              <img class="friend-avatar" src={f.avatar} alt={f.name} />
+              <div>
+                <div class="friend-name">{f.name}</div>
+                <div class="friend-desc">{f.desc}</div>
+              </div>
+            </a>
+          ))
+        }
+      </div>
+
+      <div class="prose" style="margin-top:1.5rem;">
+        <h3>申请格式</h3>
+        <pre><code>{`{
+  "name": "你的站名",
+  "url": "https://your-site.com",
+  "desc": "一句话简介",
+  "avatar": "https://your-site.com/avatar.png"
+}`}</code></pre>
+      </div>
+    </div>
+  </div>
+</BaseLayout>

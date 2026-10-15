@@ -1,0 +1,56 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { PROFILE } from '../consts';
+---
+
+<BaseLayout title="关于">
+  <div class="container" style="padding-top:1.25rem;">
+    <div class="card">
+      <div class="page-head">
+        <h1>关于我</h1>
+      </div>
+
+      <div class="about-grid">
+        <div style="text-align:center;">
+          <img
+            class="profile-avatar"
+            src={PROFILE.avatar}
+            alt={PROFILE.name}
+            style="width:8rem;height:8rem;"
+          />
+          <div class="profile-name" style="font-size:1.25rem;">{PROFILE.name}</div>
+          <div class="profile-bio">{PROFILE.bio}</div>
+        </div>
+
+        <div class="prose" style="padding-top:0.25rem;">
+          <p>你好，我是 <strong>Mortal</strong>，一个网络安全方向的学习者。</p>
+
+          <h3>正在学什么</h3>
+          <ul>
+            <li><strong>Web 安全</strong>：Burp Suite、Nmap、Wireshark、OWASP ZAP、Kali Linux</li>
+            <li><strong>CTF</strong>：Crypto / Reverse / Misc / AI Security</li>
+            <li><strong>编程</strong>：C / C++、Python</li>
+            <li><strong>AI 安全</strong>：模型水印、对抗样本、大模型权重编辑</li>
+          </ul>
+
+          <h3>关于这个博客</h3>
+          <p>
+            开这个站是为了把学到的东西沉淀下来——打过的 CTF 题、踩过的坑、看懂的论文，都写在这儿。
+            写作本身也是学习的一部分：能把一个攻击讲清楚，才算真的理解它。
+          </p>
+
+          <h3>联系我</h3>
+          <p>
+            有问题或想交流，欢迎通过 <a href="https://github.com/" target="_blank" rel="noopener"
+              >GitHub</a
+            > 找到我，也可以在友链页留言。
+          </p>
+
+          <blockquote>
+            <p>Little steps of growth. 慢慢来，比较快。</p>
+          </blockquote>
+        </div>
+      </div>
+    </div>
+  </div>
+</BaseLayout>

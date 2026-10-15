@@ -1,0 +1,65 @@
+---
+import { PROFILE, SOCIAL_LINKS } from '../consts';
+import { countCategories, countTags, type Post } from '../utils';
+
+interface Props {
+  posts: Post[];
+}
+const { posts } = Astro.props;
+const categories = countCategories(posts);
+const tags = countTags(posts);
+---
+
+<aside class="sidebar">
+  <!-- 个人名片 -->
+  <div class="card profile">
+    <a href="/about/"><img class="profile-avatar" src={PROFILE.avatar} alt={PROFILE.name} /></a>
+    <div class="profile-name">{PROFILE.name}</div>
+    <div class="profile-bio">{PROFILE.bio}</div>
+    <div class="profile-links">
+      {
+        SOCIAL_LINKS.map((s) => (
+          <a
+            class="chip"
+            href={s.url}
+            target={s.external ? '_blank' : undefined}
+            rel={s.external ? 'noopener' : undefined}
+          >
+            {s.name}
+          </a>
+        ))
+      }
+    </div>
+  </div>
+
+  <!-- 分类 -->
+  <div class="card">
+    <div class="widget-title">分类</div>
+    <ul>
+      {
+        categories.map((c) => (
+          <li>
+            <a class="widget-item" href={`/archive/?category=${encodeURIComponent(c.name)}`}>
+              <span>{c.name}</span>
+              <span class="widget-count">{c.count}</span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+
+  <!-- 标签 -->
+  <div class="card">
+    <div class="widget-title">标签</div>
+    <div style="display:flex;flex-wrap:wrap;gap:0.4rem;">
+      {
+        tags.map((t) => (
+          <a class="tag" href={`/archive/?tag=${encodeURIComponent(t.name)}`}>
+            {t.name}
+          </a>
+        ))
+      }
+    </div>
+  </div>
+</aside>

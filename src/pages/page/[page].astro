@@ -1,0 +1,42 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Sidebar from '../../components/Sidebar.astro';
+import PostList from '../../components/PostList.astro';
+import { getCollection } from 'astro:content';
+import { PAGE_SIZE } from '../../consts';
+import { sortPosts } from '../../utils';
+
+export async function getStaticPaths() {
+  const all = sortPosts(await getCollection('posts', ({ data }) => !data.draft));
+  const totalPages = Math.max(1, Math.ceil(all.length / PAGE_SIZE));
+  return Array.from({ length: totalPages - 1 }, (_, i) => {
+    const page = i + 2;
+    return {
+      params: { page: String(page) },
+      props: {
+        posts: all.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE),
+        all,
+        page,
+        totalPages,
+      },
+    };
+  });
+}
+
+const { posts, all, page, totalPages } = Astro.props;
+---
+
+<BaseLayout title={`第 ${page} 页`}>
+  <div class="container" style="padding-top:1.25rem;">
+    <div class="main-grid">
+      <Sidebar posts={all} />
+      <main>
+        <div class="page-head">
+          <h1>文章列表</h1>
+          <p>第 {page} / {totalPages} 页</p>
+        </div>
+        <PostList posts={posts} page={page} totalPages={totalPages} />
+      </main>
+    </div>
+  </div>
+</BaseLayout>

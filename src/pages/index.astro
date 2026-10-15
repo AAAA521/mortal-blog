@@ -1,0 +1,33 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Sidebar from '../components/Sidebar.astro';
+import PostList from '../components/PostList.astro';
+import { getCollection } from 'astro:content';
+import { PROFILE, SITE } from '../consts';
+import { sortPosts } from '../utils';
+
+export const PAGE_SIZE = 10;
+
+const all = sortPosts(await getCollection('posts', ({ data }) => !data.draft));
+const posts = all.slice(0, PAGE_SIZE);
+const totalPages = Math.max(1, Math.ceil(all.length / PAGE_SIZE));
+---
+
+<BaseLayout>
+  <div class="container">
+    <div class="banner">
+      <img src={PROFILE.banner} alt="Banner image of the blog" />
+      <div class="banner-title">
+        <h1>{SITE.title}</h1>
+        <p>{SITE.subtitle}</p>
+      </div>
+    </div>
+
+    <div class="main-grid" style="margin-top:1.25rem;">
+      <Sidebar posts={all} />
+      <main>
+        <PostList posts={posts} page={1} totalPages={totalPages} />
+      </main>
+    </div>
+  </div>
+</BaseLayout>
