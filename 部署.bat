@@ -10,8 +10,8 @@ rem  2. 本机【没有】独立安装 Git，只有 WorkBuddy 自带的便携版。
 rem     下面这两行就是把它接进来；以后若自己装了正式版 Git，
 rem     把这两行删掉即可。
 rem ============================================================
-set "GIT_DIR=D:\workbuddy\resources\vendor\PortableGit\cmd"
-if exist "%GIT_DIR%\git.exe" set "PATH=%GIT_DIR%;%PATH%"
+set "GITCMD_DIR=D:\workbuddy\resources\vendor\PortableGit\cmd"
+if exist "%GITCMD_DIR%\git.exe" set "PATH=%GITCMD_DIR%;%PATH%"
 
 set "NODE_DIR=D:\node-js"
 if exist "%NODE_DIR%\node.exe" set "PATH=%NODE_DIR%;%PATH%"
@@ -123,7 +123,7 @@ echo   [X] 找不到 git 命令
 echo ============================================
 echo.
 echo 脚本尝试过的路径:
-echo   %GIT_DIR%\git.exe
+echo   %GITCMD_DIR%\git.exe
 echo.
 echo 如果这个文件不存在，说明 WorkBuddy 更新过目录结构。
 echo 解决办法：自己装一个 Git for Windows（https://git-scm.com/），

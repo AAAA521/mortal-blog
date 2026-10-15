@@ -23,3 +23,6 @@ Thumbs.db
 .vscode/*
 !.vscode/extensions.json
 .idea/
+
+# 部署脚本干跑测试产物
+_dry.bat
