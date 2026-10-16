@@ -38,7 +38,9 @@ export const FRIEND_LINKS = [
     name: 'yuanmuyan',
     url: 'https://yuanmuyan.github.io/',
     desc: 'web 手一枚，博客模板参考来源',
-    avatar: 'https://github.com/identicons/yuanmuyan.png',
+    // 原用 github.com/identicons/…（GitHub 早已下线该端点，取不到图）。
+    // 换成对方友链页「我？」处公布的官方 icon
+    avatar: 'https://yuanmuyan.github.io/favicon/avatar-180.png',
   },
   {
     name: 'Map1e-Suk1',
