@@ -672,6 +672,65 @@ button {
 }
 
 /* ============ 友链 ============ */
+
+/* —— 我的名片 —— */
+.friend-me {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  padding: 1rem 1.15rem;
+  border-radius: var(--radius-sm);
+  background: linear-gradient(135deg, var(--primary-soft), var(--card-bg-soft) 72%);
+  border: 1px solid var(--border);
+}
+.friend-me-who {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  flex: 1 1 13rem;
+  min-width: 0;
+}
+.friend-me-name {
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--text);
+}
+.friend-me-url {
+  font-size: 0.78rem;
+  color: var(--text-mute);
+  word-break: break-all;
+  margin-top: 0.1rem;
+}
+
+/* —— 复制按钮 —— */
+.copy-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.4rem 0.85rem;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--card-bg);
+  color: var(--text-soft);
+  font-size: 0.8rem;
+  font-family: inherit;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: border-color 0.2s ease, color 0.2s ease, background 0.2s ease;
+}
+.copy-btn:hover {
+  border-color: var(--primary);
+  color: var(--primary-text);
+  background: var(--card-bg-soft);
+}
+.copy-btn.done {
+  border-color: var(--primary);
+  color: var(--primary-text);
+  background: var(--primary-soft);
+}
+
+/* —— 友链网格 —— */
 .friend-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
@@ -683,22 +742,140 @@ button {
   gap: 0.85rem;
   padding: 1rem;
 }
+.friend-body {
+  flex: 1;
+  min-width: 0;
+}
+
+/* 头像：图片挂了就露出首字母色块，不会出现破图 */
 .friend-avatar {
+  position: relative;
   width: 3rem;
   height: 3rem;
   border-radius: 50%;
-  object-fit: cover;
-  background: var(--card-bg-soft);
   flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  background: var(--primary-soft);
+  color: var(--primary-text);
+  font-weight: 700;
+  font-size: 1.1rem;
+  transition: transform 0.3s ease;
 }
+.friend-avatar::after {
+  content: attr(data-initial);
+  text-transform: uppercase;
+}
+.friend-avatar img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+.friend-avatar img.is-failed {
+  display: none;
+}
+.friend-card:hover .friend-avatar {
+  transform: rotate(-6deg) scale(1.08);
+}
+
 .friend-name {
   font-weight: 700;
   font-size: 0.95rem;
   color: var(--text);
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+.friend-name svg {
+  opacity: 0.35;
+  flex-shrink: 0;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+.friend-card:hover .friend-name svg {
+  opacity: 0.75;
+  transform: translate(1px, -1px);
 }
 .friend-desc {
   font-size: 0.8rem;
   color: var(--text-mute);
+  margin-top: 0.15rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.friend-host {
+  font-size: 0.72rem;
+  color: var(--text-mute);
+  opacity: 0.72;
+  margin-top: 0.3rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* —— 虚位以待 —— */
+.friend-slot {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3rem;
+  min-height: 5.6rem;
+  padding: 1rem;
+  border: 1.5px dashed var(--border);
+  border-radius: var(--radius);
+  color: var(--text-mute);
+  font-size: 0.82rem;
+  text-align: center;
+  transition: border-color 0.25s ease, color 0.25s ease;
+}
+.friend-slot:hover {
+  border-color: var(--primary);
+  color: var(--primary-text);
+}
+.friend-slot .slot-plus {
+  font-size: 1.4rem;
+  line-height: 1;
+  opacity: 0.5;
+}
+
+/* —— 申请步骤 —— */
+.friend-steps {
+  list-style: none;
+  margin: 0.85rem 0 0;
+  padding: 0;
+  display: grid;
+  gap: 0.6rem;
+}
+.friend-steps li {
+  display: flex;
+  gap: 0.65rem;
+  align-items: flex-start;
+  font-size: 0.88rem;
+  color: var(--text-soft);
+  line-height: 1.6;
+}
+.friend-steps .step-n {
+  flex-shrink: 0;
+  width: 1.35rem;
+  height: 1.35rem;
+  border-radius: 999px;
+  background: var(--primary-soft);
+  color: var(--primary-text);
+  font-size: 0.72rem;
+  font-weight: 700;
+  display: grid;
+  place-items: center;
+  margin-top: 0.12rem;
+}
+.friend-steps a {
+  color: var(--primary-text);
 }
 
 /* ============ 文章页头 ============ */

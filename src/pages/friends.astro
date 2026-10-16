@@ -1,6 +1,46 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { FRIEND_LINKS } from '../consts';
+import { FRIEND_LINKS, PROFILE, SITE } from '../consts';
+import { withBase } from '../utils';
+
+/** 取域名（去掉 www.），取不到就原样返回 */
+const hostOf = (u: string) => {
+  try {
+    return new URL(u).hostname.replace(/^www\./, '');
+  } catch {
+    return u;
+  }
+};
+/** 头像挂掉时展示的首字母 */
+const initialOf = (n: string) => [...n][0] ?? '?';
+
+// 本站信息：给别人加友链时用（必须绝对地址，否则对方站内解析不到）
+const siteUrl = `${SITE.url.replace(/\/+$/, '')}/`;
+const mine = {
+  name: PROFILE.name,
+  url: siteUrl,
+  desc: PROFILE.bio,
+  avatar: `${siteUrl}avatar.png`,
+};
+const mineJson = JSON.stringify(mine, null, 2);
+
+// 申请模板
+const tplJson = JSON.stringify(
+  {
+    name: '你的站名',
+    url: 'https://your-site.com',
+    desc: '一句话简介',
+    avatar: 'https://your-site.com/avatar.png',
+  },
+  null,
+  2
+);
+
+// 友链太少时网格会空一大片，用「虚位以待」补到至少 3 格
+const MIN_SLOTS = 3;
+const emptySlots = Math.max(0, MIN_SLOTS - FRIEND_LINKS.length);
+
+const issuesUrl = 'https://github.com/AAAA521/mortal-blog/issues/new';
 ---
 
 <BaseLayout title="友链">
@@ -8,32 +48,171 @@ import { FRIEND_LINKS } from '../consts';
     <div class="card">
       <div class="page-head">
         <h1>友链</h1>
-        <p>欢迎交换友链，在 GitHub 上给我提 issue 即可 ~</p>
+        <p>互相串门的朋友们。想交换的话，照着页面底部的格式发给我就行 ~</p>
+      </div>
+
+      {/* —— 我的名片：方便对方直接复制走 —— */}
+      <div class="friend-me">
+        <div class="friend-me-who">
+          <div class="friend-avatar" data-initial={initialOf(PROFILE.name)}>
+            <img
+              src={withBase(PROFILE.avatar)}
+              alt={PROFILE.name}
+              loading="lazy"
+              onerror="this.classList.add('is-failed')"
+            />
+          </div>
+          <div style="min-width:0;">
+            <div class="friend-me-name">{PROFILE.name}</div>
+            <div class="friend-me-url">{hostOf(siteUrl)}</div>
+          </div>
+        </div>
+        <button class="copy-btn" type="button" data-copy={mineJson}>
+          <svg
+            width="12"
+            height="12"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2.2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <rect x="9" y="9" width="12" height="12" rx="2"></rect>
+            <path d="M5 15V5a2 2 0 0 1 2-2h10"></path>
+          </svg>
+          <span class="copy-text">复制我的信息</span>
+        </button>
+      </div>
+
+      {/* —— 友链墙 —— */}
+      <div class="widget-title" style="margin-top:1.5rem;">
+        朋友们 <span class="tag">{FRIEND_LINKS.length}</span>
       </div>
 
       <div class="friend-grid">
         {
           FRIEND_LINKS.map((f) => (
             <a class="card card-hover friend-card" href={f.url} target="_blank" rel="noopener">
-              <img class="friend-avatar" src={f.avatar} alt={f.name} />
-              <div>
-                <div class="friend-name">{f.name}</div>
+              <div class="friend-avatar" data-initial={initialOf(f.name)}>
+                <img
+                  src={f.avatar}
+                  alt={f.name}
+                  loading="lazy"
+                  onerror="this.classList.add('is-failed')"
+                />
+              </div>
+              <div class="friend-body">
+                <div class="friend-name">
+                  {f.name}
+                  <svg
+                    width="11"
+                    height="11"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="3"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path d="M7 17L17 7M17 7H9M17 7v8" />
+                  </svg>
+                </div>
                 <div class="friend-desc">{f.desc}</div>
+                <div class="friend-host">{hostOf(f.url)}</div>
               </div>
             </a>
           ))
         }
+
+        {Array.from({ length: emptySlots }, () => (
+          <div class="friend-slot">
+            <span class="slot-plus" aria-hidden="true">＋</span>
+            <span>虚位以待</span>
+          </div>
+        ))}
       </div>
 
-      <div class="prose" style="margin-top:1.5rem;">
-        <h3>申请格式</h3>
-        <pre><code>{`{
-  "name": "你的站名",
-  "url": "https://your-site.com",
-  "desc": "一句话简介",
-  "avatar": "https://your-site.com/avatar.png"
-}`}</code></pre>
+      {/* —— 交换流程 —— */}
+      <div class="prose" style="margin-top:1.75rem;">
+        <h3>交换友链</h3>
+        <ol class="friend-steps">
+          <li>
+            <span class="step-n">1</span>
+            <span>把下面的模板改成你自己的信息</span>
+          </li>
+          <li>
+            <span class="step-n">2</span>
+            <span>
+              到 <a href={issuesUrl} target="_blank" rel="noopener">GitHub 提一个 issue</a>{' '}
+              贴进去，也可以在站上留言告诉我
+            </span>
+          </li>
+          <li>
+            <span class="step-n">3</span>
+            <span>我加上后就会出现在上面的友链墙，一般一两天内搞定</span>
+          </li>
+        </ol>
+
+        <div style="margin-top:1.1rem;">
+          <button class="copy-btn" type="button" data-copy={tplJson} style="margin-bottom:0.7rem;">
+            <svg
+              width="12"
+              height="12"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <rect x="9" y="9" width="12" height="12" rx="2"></rect>
+              <path d="M5 15V5a2 2 0 0 1 2-2h10"></path>
+            </svg>
+            <span class="copy-text">复制模板</span>
+          </button>
+          <pre><code>{tplJson}</code></pre>
+        </div>
       </div>
     </div>
   </div>
 </BaseLayout>
+
+<script is:inline>
+  (() => {
+    const write = async (text) => {
+      try {
+        await navigator.clipboard.writeText(text);
+        return;
+      } catch (e) {
+        /* 非 https 或旧浏览器，走降级 */
+      }
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      ta.remove();
+    };
+
+    document.querySelectorAll('.copy-btn').forEach((btn) => {
+      btn.addEventListener('click', async () => {
+        await write(btn.getAttribute('data-copy') || '');
+        const label = btn.querySelector('.copy-text');
+        if (!label) return;
+        const old = label.textContent;
+        label.textContent = '已复制 ✓';
+        btn.classList.add('done');
+        clearTimeout(btn._t);
+        btn._t = setTimeout(() => {
+          label.textContent = old;
+          btn.classList.remove('done');
+        }, 1800);
+      });
+    });
+  })();
+</script>
