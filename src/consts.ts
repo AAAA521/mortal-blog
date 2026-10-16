@@ -43,7 +43,8 @@ export const FRIEND_LINKS = [
   {
     name: 'Map1e-Suk1',
     url: 'https://map1e-suk1.github.io/',
-    desc: '写 CTF WP 和杂谈的秘密基地，一起自由漫游',
+    // 对方友链页公布的官方描述，直接用原文
+    desc: 'Roam free, for life is wide.',
     avatar: 'https://map1e-suk1.github.io/avatar.webp',
   },
 ];
