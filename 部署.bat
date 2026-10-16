@@ -16,6 +16,15 @@ if exist "%GITCMD_DIR%\git.exe" set "PATH=%GITCMD_DIR%;%PATH%"
 set "NODE_DIR=D:\node-js"
 if exist "%NODE_DIR%\node.exe" set "PATH=%NODE_DIR%;%PATH%"
 
+rem 清掉可能继承到的 HTTP 代理环境变量
+rem （git 若走代理会报: CONNECT tunnel failed, response 502）
+set "http_proxy="
+set "https_proxy="
+set "HTTP_PROXY="
+set "HTTPS_PROXY="
+set "ALL_PROXY="
+set "all_proxy="
+
 echo ============================================
 echo   Mortal Blog  提交并推送到 GitHub
 echo ============================================
